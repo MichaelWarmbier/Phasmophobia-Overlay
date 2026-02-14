@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Handlee&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+        <title>Phasmophobia Stream Overlay</title>
+       
+        <style>
+            #GhostSelect, #ItemSelect, #ExtraSelect {
+                height: max-content;
+                width: 400px;
+                background-color: gray;
+                display: flex;
+                align-items: flex-start;
+                flex-wrap: wrap;
+                margin-bottom: 20px;
+                user-select: none;
+            }
+            .item {
+                width: 30%;
+                height: 1.5em;
+                font-size: 15px;
+                color: white;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                margin: 1.5%;
+                cursor: pointer;
+                background-color: inherit;
+                font-family: "Handlee", cursive;
+                font-weight: 400;
+                text-decoration-color: red;
+            } .item:hover { filter:brightness(95%); }
+        </style>
+    </head>
+    <body>
+
+        <script>
+            let crossed_ghosts = [];
+            let crossed_evidence = [];
+            let found_ghost = null;
+            let found_evidence = [];
+            let isMale = false;
+            let evidence_amount = 3;
+
+            let ghost_data = {
+                "Banshee": {
+                    "Evidence": ["Ghost Orbs", "Ultraviolet", "D.O.T.S"],
+                    "Forced": null,
+                },
+                "Dayan": {
+                    "Evidence": ["EMF5", "Ghost Orbs", "Spirit Box"],
+                    "Forced": null,
+                },
+                "Deogen": {
+                    "Evidence": ["Spirit Box", "Ghost Writing", "D.O.T.S"],
+                    "Forced": "Spirit Box",
+                },
+                "Demon": {
+                    "Evidence": ["Freezing Temps", "Ultraviolet", "Ghost Writing"],
+                    "Forced": null,
+                },
+                "Gallu": {
+                    "Evidence": ["EMF5", "Spirit Box", "Ultraviolet"],
+                    "Forced": null,
+                },
+                "Goryo": {
+                    "Evidence": ["EMF5", "Ultraviolet", "D.O.T.S"],
+                    "Forced": "D.O.T.S",
+                },
+                "Hantu": {
+                    "Evidence": ["Freezing Temps", "Ghost Orbs", "Ultraviolet"],
+                    "Forced": "Freezing Temps",
+                },
+                "Jinn": {
+                    "Evidence": ["EMF5", "Freezing Temps", "Ultraviolet"],
+                    "Forced": null,
+                },
+                "Mare": {
+                    "Evidence": ["Ghost Orbs", "Spirit Box", "Ghost Writing"],
+                    "Forced": null,
+                },
+                "Moroi": {
+                    "Evidence": ["Spirit Box", "Freezing Temps", "Ghost Writing"],
+                    "Forced": "Spirit Box",
+                },
+                "Myling": {
+                    "Evidence": ["EMF5", "Ultraviolet", "Ghost Writing"],
+                    "Forced": null,
+                },
+                "Obake": {
+                    "Evidence": ["EMF5", "Ghost Orbs", "Ultraviolet"],
+                    "Forced": "Ultraviolet",
+                },
+                "Obambo": {
+                    "Evidence": ["D.O.T.S", "Ultraviolet", "Ghost Writing"],
+                    "Forced": null,
+                },
+                "Oni": {
+                    "Evidence": ["EMF5", "Freezing Temps", "D.O.T.S"],
+                    "Forced": null,
+                },
+                "Onryo": {
+                    "Evidence": ["Ghost Orbs", "Spirit Box", "Freezing Temps"],
+                    "Forced": null,
+                },
+                "Phantom": {
+                    "Evidence": ["Spirit Box", "Ultraviolet", "D.O.T.S"],
+                    "Forced": null,
+                },
+                "Poltergeist": {
+                    "Evidence": ["Spirit Box", "Ultraviolet", "Ghost Writing"],
+                    "Forced": null,
+                },
+                "Raiju": {
+                    "Evidence": ["EMF5", "Ghost Orbs", "D.O.T.S"],
+                    "Forced": null,
+                },
+                "Revenant": {
+                    "Evidence": ["Ghost Orbs", "Freezing Temps", "Ghost Writing"],
+                    "Forced": null,
+                },
+                "Shade": {
+                    "Evidence": ["EMF5", "Freezing Temps", "Ghost Writing"],
+                    "Forced": null,
+                },
+                "Spirit": {
+                    "Evidence": ["EMF5", "Spirit Box", "Ghost Writing"],
+                    "Forced": null,
+                },
+                "Thaye": {
+                    "Evidence": ["Ghost Orbs", "D.O.T.S", "Ghost Writing"],
+                    "Forced": null,
+                },
+                "The Mimic": {
+                    "Evidence": ["Spirit Box", "Freezing Temps", "Ultraviolet"],
+                    "Forced": "Ghost Orbs",
+                },
+                "The Twins": {
+                    "Evidence": ["EMF5", "Spirit Box", "Freezing Temps"],
+                    "Forced": null,
+                },
+                "Wraith": {
+                    "Evidence": ["EMF5", "Spirit Box", "D.O.T.S"],
+                    "Forced": null,
+                },
+                "Yokai": {
+                    "Evidence": ["Ghost Orbs", "Spirit Box", "D.O.T.S"],
+                    "Forced": null,
+                },
+                "Yurei": {
+                    "Evidence": ["Ghost Orbs", "Freezing Temps", "D.O.T.S"],
+                    "Forced": null,
+                },
+            }
+        </script>
+
+        <div id="ItemSelect"> 
+            <div class="evidence item" onclick="mark_evidence(this)" lang="-">EMF5</div>
+            <div class="evidence item" onclick="mark_evidence(this)" lang="-">Ghost Orbs</div>
+            <div class="evidence item" onclick="mark_evidence(this)" lang="-">Spirit Box</div>
+            <div class="evidence item" onclick="mark_evidence(this)" lang="-">Freezing Temps</div>
+            <div class="evidence item" onclick="mark_evidence(this)" lang="-">Ultraviolet</div>
+            <div class="evidence item" onclick="mark_evidence(this)" lang="-">Ghost Writing</div>
+            <div class="evidence item" onclick="mark_evidence(this)" lang="-">D.O.T.S</div>
+        </div>
+        
+        <div id="GhostSelect">
+            <div class="ghost item" onclick="mark_ghost(this)" lang="-">Banshee</div>
+            <div class="ghost item" onclick="mark_ghost(this)" lang="-">Dayan</div>
+            <div class="ghost item" onclick="mark_ghost(this)" lang="-">Deogen</div>
+            <div class="ghost item" onclick="mark_ghost(this)" lang="-">Demon</div>
+            <div class="ghost item" onclick="mark_ghost(this)" lang="-">Gallu</div>
+            <div class="ghost item" onclick="mark_ghost(this)" lang="-">Goryo</div>
+            <div class="ghost item" onclick="mark_ghost(this)" lang="-">Hantu</div>
+            <div class="ghost item" onclick="mark_ghost(this)" lang="-">Jinn</div>
+            <div class="ghost item" onclick="mark_ghost(this)" lang="-">Mare</div>
+            <div class="ghost item" onclick="mark_ghost(this)" lang="-">Moroi</div>
+            <div class="ghost item" onclick="mark_ghost(this)" lang="-">Myling</div>
+            <div class="ghost item" onclick="mark_ghost(this)" lang="-">Obake</div>
+            <div class="ghost item" onclick="mark_ghost(this)" lang="-">Obambo</div>
+            <div class="ghost item" onclick="mark_ghost(this)" lang="-">Oni</div>
+            <div class="ghost item" onclick="mark_ghost(this)" lang="-">Onryo</div>
+            <div class="ghost item" onclick="mark_ghost(this)" lang="-">Phantom</div>
+            <div class="ghost item" onclick="mark_ghost(this)" lang="-">Poltergeist</div>
+            <div class="ghost item" onclick="mark_ghost(this)" lang="-">Raiju</div>
+            <div class="ghost item" onclick="mark_ghost(this)" lang="-">Revenant</div>
+            <div class="ghost item" onclick="mark_ghost(this)" lang="-">Shade</div>
+            <div class="ghost item" onclick="mark_ghost(this)" lang="-">Spirit</div>
+            <div class="ghost item" onclick="mark_ghost(this)" lang="-">Thaye</div>
+            <div class="ghost item" onclick="mark_ghost(this)" lang="-">The Mimic</div>
+            <div class="ghost item" onclick="mark_ghost(this)" lang="-">The Twins</div>
+            <div class="ghost item" onclick="mark_ghost(this)" lang="-">Wraith</div>
+            <div class="ghost item" onclick="mark_ghost(this)" lang="-">Yokai</div>
+            <div class="ghost item" onclick="mark_ghost(this)" lang="-">Yurei</div>
+        </div>
+
+        <div id="ExtraSelect">
+            <div class="extra item" onclick="isMale = !isMale; applyData();" lang="-">Male Ghost</div>
+            <div class="extra item" onclick="toggleEvidence()" lang="-">3 Evidence</div>
+            <div class="extra item" ondblclick="reset()" lang="-">Reset</div>
+        </div>
+
+        <script>
+            function mark_evidence(obj) {
+                if (obj.lang == "-" && found_evidence.length < evidence_amount) { change_visual(obj, "o"); obj.lang = "o"; }
+                else if (obj.lang == "o" || (obj.lang == "-")) { change_visual(obj, "x"); obj.lang = "x"; }
+                else { change_visual(obj, "-"); obj.lang = "-"; }
+                update();
+            }
+
+            function mark_ghost(obj) {
+                if (obj.lang == "-") { found_ghost = obj.innerHTML; }
+                else if (obj.lang == "o") { change_visual(obj, "x"); obj.lang = "x"; found_ghost = null; }
+                else  { change_visual(obj, "-"); obj.lang = "-"; }
+                update();
+            }
+
+         
+            function change_visual(obj, label) {
+                switch (label) {
+                    case "-":
+                        obj.style.textDecoration = "none";
+                        obj.style.boxShadow = "none";
+                        obj.style.borderRadius = "0";
+                        obj.style.color = "white";
+                    break;
+                    case "x":
+                        obj.style.textDecoration = "line-through";
+                        obj.style.boxShadow = "none";
+                        obj.style.borderRadius = "0";
+                        obj.style.color = "black";
+                    break;
+                    case "o":
+                        obj.style.textDecoration = "none";
+                        obj.style.boxShadow = "1px 1px black, -1px -1px black, 1px -1px black, -1px 1px black";
+                        obj.style.borderRadius = "50%";
+                        obj.style.color = "white";
+                    break;
+                }
+            }
+
+            function ruleout(name) {
+                const ghosts = document.getElementsByClassName('ghost');
+                for (let gIndex = 0; gIndex < ghosts.length; gIndex++)
+                    if (ghosts[gIndex].innerHTML == name) 
+                        ghosts[gIndex].style.filter = "brightness(50%)";
+
+            }
+
+            function update() {
+                const evidence = document.getElementsByClassName('evidence');
+                const ghosts = document.getElementsByClassName('ghost');
+
+                crossed_ghosts = [];
+                crossed_evidence = [];
+                found_evidence = [];    
+                
+                for (let eIndex = 0; eIndex < evidence.length; eIndex++) {
+                    if (evidence[eIndex].lang == "x") crossed_evidence.push(evidence[eIndex].innerHTML);
+                    if (evidence[eIndex].lang == "o") found_evidence.push(evidence[eIndex].innerHTML);
+                }
+
+                for (let gIndex = 0; gIndex < ghosts.length; gIndex++) {
+                    if (ghosts[gIndex].lang == "o" && ghosts[gIndex].innerHTML != found_ghost)
+                        { change_visual(ghosts[gIndex], "-"); ghosts[gIndex].lang = "-"; }
+                    else if (ghosts[gIndex].innerHTML == found_ghost)
+                        { change_visual(ghosts[gIndex], "o"); ghosts[gIndex].lang = "o"; } 
+                    if (ghosts[gIndex].lang == "x") crossed_ghosts.push(ghosts[gIndex].innerHTML);
+                }
+                applyData();
+            }
+
+            function applyData() {
+                const extras = document.getElementsByClassName("extra");
+                const ghosts = document.getElementsByClassName("ghost");
+                for (let gIndex = 0; gIndex < ghosts.length; gIndex++) {
+                    ghosts[gIndex].style.filter = "brightness(100%)";
+                    let name = ghosts[gIndex].innerHTML;
+
+                    if (ghost_data[name]) {
+                        for (let eIndex = 0; eIndex < found_evidence.length; eIndex++)
+                            if (!ghost_data[name].Evidence.includes(found_evidence[eIndex]))
+                                if (!(name == "The Mimic" && found_evidence[eIndex] == "Ghost Orbs"))
+                                    ruleout(name);
+
+                        for (let eIndex = 0; eIndex < crossed_evidence.length; eIndex++) 
+                            if ((evidence_amount == 3 && ghost_data[name].Evidence.includes(crossed_evidence[eIndex]))
+                            || crossed_evidence[eIndex].includes(ghost_data[name].Forced)) 
+                                ruleout(name);
+
+                        if (found_evidence.length == evidence_amount && 
+                            !found_evidence.includes(ghost_data[name].Forced)
+                            && ghost_data[name].Forced)
+                                ruleout(name);
+
+                        let missing_evidence = 0;
+                        for (let eIndex = 0; eIndex < crossed_evidence.length; eIndex++) {
+                            if (ghost_data[name].Evidence.includes(crossed_evidence[eIndex]))
+                                missing_evidence++;
+                        }
+                        if (evidence_amount - missing_evidence <= 0) ruleout(name);
+                    }
+
+                }
+            
+                if (isMale) { 
+                    ruleout("Banshee");
+                    ruleout("Dayan");  
+                    change_visual(extras[0], "-");
+                } else change_visual(extras[0], "x");
+
+                
+            }
+
+            function reset() {
+                const ghosts = document.getElementsByClassName("ghost");
+                const evidence = document.getElementsByClassName("evidence");
+
+                found_ghost = null;
+                found_evidence = [];
+                crossed_ghosts = [];
+                crossed_evidence = [];
+                evidence_amount = -1;
+                toggleEvidence();
+                isMale = false;
+
+                for (let gIndex = 0; gIndex < ghosts.length; gIndex++) 
+                    { ghosts[gIndex].lang = "-"; change_visual(ghosts[gIndex], "-"); }
+                for (let eIndex = 0; eIndex < evidence.length; eIndex++) 
+                    { evidence[eIndex].lang = "-"; change_visual(evidence[eIndex], "-"); }
+
+                update();
+            }
+
+            function toggleEvidence() {
+                evidence_amount--;
+                if (evidence_amount < 0) evidence_amount = 3;
+
+                document.getElementsByClassName("extra")[1].innerHTML = `${evidence_amount} Evidence`;
+                update();
+            }
+
+            update();
+        </script>
+
+    </body>
+</html
