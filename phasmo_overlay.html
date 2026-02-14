@@ -31,7 +31,10 @@
                 font-family: "Handlee", cursive;
                 font-weight: 400;
                 text-decoration-color: red;
-            } .item:hover { filter:brightness(95%); }
+                text-shadow: 2px 2px black;
+            } 
+            .item:hover { filter:brightness(90%); }
+            #Timer:hover { filter:brightness(100%) !important; }
         </style>
     </head>
     <body>
@@ -43,6 +46,9 @@
             let found_evidence = [];
             let isMale = false;
             let evidence_amount = 3;
+            let timer_state = "o";
+            let timestamp = Math.floor((new Date()).getTime() / 1000);
+            let timer_value = 0;
 
             let ghost_data = {
                 "Banshee": {
@@ -199,7 +205,9 @@
         <div id="ExtraSelect">
             <div class="extra item" onclick="isMale = !isMale; applyData();" lang="-">Male Ghost</div>
             <div class="extra item" onclick="toggleEvidence()" lang="-">3 Evidence</div>
-            <div class="extra item" ondblclick="reset()" lang="-">Reset</div>
+            <div class="extra item" ondblclick="window.location.reload()" lang="-">Reset</div>
+            <div class="extra item" id="TimeStart" onclick="" lang="o">Start</div>
+            <div class="extra item" id="Timer" lang="-" style="font-family: 'Roboto', sans-serif; color: darkgray;">00:00</div>
         </div>
 
         <script>
@@ -222,21 +230,15 @@
                 switch (label) {
                     case "-":
                         obj.style.textDecoration = "none";
-                        obj.style.boxShadow = "none";
-                        obj.style.borderRadius = "0";
                         obj.style.color = "white";
                     break;
                     case "x":
                         obj.style.textDecoration = "line-through";
-                        obj.style.boxShadow = "none";
-                        obj.style.borderRadius = "0";
                         obj.style.color = "black";
                     break;
                     case "o":
                         obj.style.textDecoration = "none";
-                        obj.style.boxShadow = "1px 1px black, -1px -1px black, 1px -1px black, -1px 1px black";
-                        obj.style.borderRadius = "50%";
-                        obj.style.color = "white";
+                        obj.style.color = "green";
                     break;
                 }
             }
@@ -314,26 +316,6 @@
                 
             }
 
-            function reset() {
-                const ghosts = document.getElementsByClassName("ghost");
-                const evidence = document.getElementsByClassName("evidence");
-
-                found_ghost = null;
-                found_evidence = [];
-                crossed_ghosts = [];
-                crossed_evidence = [];
-                evidence_amount = -1;
-                toggleEvidence();
-                isMale = false;
-
-                for (let gIndex = 0; gIndex < ghosts.length; gIndex++) 
-                    { ghosts[gIndex].lang = "-"; change_visual(ghosts[gIndex], "-"); }
-                for (let eIndex = 0; eIndex < evidence.length; eIndex++) 
-                    { evidence[eIndex].lang = "-"; change_visual(evidence[eIndex], "-"); }
-
-                update();
-            }
-
             function toggleEvidence() {
                 evidence_amount--;
                 if (evidence_amount < 0) evidence_amount = 3;
@@ -341,6 +323,27 @@
                 document.getElementsByClassName("extra")[1].innerHTML = `${evidence_amount} Evidence`;
                 update();
             }
+
+            TimeStart.addEventListener("click", () => {
+                if (timer_state == "o") { 
+                    document.getElementsByClassName("extra")[3].innerHTML = "Stop";
+                    timer_state = "x"; 
+                    timestamp = Math.floor((new Date()).getTime() / 1000);
+                } else if (timer_state == "x") { 
+                    document.getElementsByClassName("extra")[3].innerHTML = "Reset"; 
+                    timer_state = "-"; 
+                } else { 
+                    document.getElementsByClassName("extra")[3].innerHTML = "Start"; 
+                    timer_state = "o"; 
+                }
+            });
+
+            setInterval(() => {
+                if (timer_value > 6_000_000) timer_value = 6_000_000;
+                if (timer_state == "x") timer_value = Math.floor((new Date()).getTime() / 1000) - timestamp;
+                else if (timer_state == "o") timer_value = 0;
+                document.getElementsByClassName("extra")[4].innerHTML = `${(Math.floor(timer_value / 60)).toString().padStart(2, "0")}:${(timer_value % 60).toString().padStart(2, "0")}`; 
+            }, 1000);
 
             update();
         </script>

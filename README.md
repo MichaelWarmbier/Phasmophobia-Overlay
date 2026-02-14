@@ -7,7 +7,8 @@ An improved version of the in-game journal in Phasmophobia. Designed to be used 
 - Journal considers _Ghost Orbs_ forced evidence for The Mimic.
 - Journal will appropriately rule out ghosts based on the number of available evidence.
 - Journal will rule out female only ghosts when the ghost is selected as male.
-- Evidence can be crossed out on lower evidence runs without ruling out potential ghosts
+- Evidence can be crossed out on lower evidence runs without ruling out potential ghosts.
+- Timer included to make tracking certain events easier.
 
 ## How do I use this?
 
