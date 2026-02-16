@@ -33,8 +33,10 @@
                 text-decoration-color: red;
                 text-shadow: 2px 2px black;
             } 
+            .item:nth-of-type(6):hover, 
+            .item:nth-of-type(5):hover { filter: none !important; cursor: auto !important; }
             .item:hover { filter:brightness(90%); }
-            #Timer:hover { filter:brightness(100%) !important; }
+            p { color: #e0b255; }
         </style>
     </head>
     <body>
@@ -49,115 +51,143 @@
             let timer_state = "o";
             let timestamp = Math.floor((new Date()).getTime() / 1000);
             let timer_value = 0;
+            let speed_option = 0;
 
-            let ghost_data = {
+            const ghost_data = {
                 "Banshee": {
                     "Evidence": ["Ghost Orbs", "Ultraviolet", "D.O.T.S"],
                     "Forced": null,
+                    "Speed": ["Normal Speed"],
                 },
                 "Dayan": {
                     "Evidence": ["EMF5", "Ghost Orbs", "Spirit Box"],
                     "Forced": null,
+                    "Speed": ["Slow Speed", "Fast Speed"],
                 },
                 "Deogen": {
                     "Evidence": ["Spirit Box", "Ghost Writing", "D.O.T.S"],
                     "Forced": "Spirit Box",
+                    "Speed": null,
                 },
                 "Demon": {
                     "Evidence": ["Freezing Temps", "Ultraviolet", "Ghost Writing"],
                     "Forced": null,
+                    "Speed": ["Normal Speed"],
                 },
                 "Gallu": {
                     "Evidence": ["EMF5", "Spirit Box", "Ultraviolet"],
                     "Forced": null,
+                    "Speed": ["Slow Speed", "Fast Speed"],
                 },
                 "Goryo": {
                     "Evidence": ["EMF5", "Ultraviolet", "D.O.T.S"],
                     "Forced": "D.O.T.S",
+                    "Speed": ["Normal Speed"],
                 },
                 "Hantu": {
                     "Evidence": ["Freezing Temps", "Ghost Orbs", "Ultraviolet"],
                     "Forced": "Freezing Temps",
+                    "Speed": ["Slow Speed", "Fast Speed"],
                 },
                 "Jinn": {
                     "Evidence": ["EMF5", "Freezing Temps", "Ultraviolet"],
                     "Forced": null,
+                    "Speed": ["Normal Speed"],
                 },
                 "Mare": {
                     "Evidence": ["Ghost Orbs", "Spirit Box", "Ghost Writing"],
                     "Forced": null,
+                    "Speed": ["Normal Speed"],
                 },
                 "Moroi": {
                     "Evidence": ["Spirit Box", "Freezing Temps", "Ghost Writing"],
                     "Forced": "Spirit Box",
+                    "Speed": null,
                 },
                 "Myling": {
                     "Evidence": ["EMF5", "Ultraviolet", "Ghost Writing"],
                     "Forced": null,
+                    "Speed": ["Normal Speed"],
                 },
                 "Obake": {
                     "Evidence": ["EMF5", "Ghost Orbs", "Ultraviolet"],
                     "Forced": "Ultraviolet",
+                    "Speed": ["Normal Speed"],
                 },
                 "Obambo": {
                     "Evidence": ["D.O.T.S", "Ultraviolet", "Ghost Writing"],
                     "Forced": null,
+                    "Speed": ["Slow Speed", "Fast Speed"],
                 },
                 "Oni": {
                     "Evidence": ["EMF5", "Freezing Temps", "D.O.T.S"],
                     "Forced": null,
+                    "Speed": ["Normal Speed"],
                 },
                 "Onryo": {
                     "Evidence": ["Ghost Orbs", "Spirit Box", "Freezing Temps"],
                     "Forced": null,
+                    "Speed": ["Normal Speed"],
                 },
                 "Phantom": {
                     "Evidence": ["Spirit Box", "Ultraviolet", "D.O.T.S"],
                     "Forced": null,
+                    "Speed": ["Normal Speed"],
                 },
                 "Poltergeist": {
                     "Evidence": ["Spirit Box", "Ultraviolet", "Ghost Writing"],
                     "Forced": null,
+                    "Speed": ["Normal Speed"],
                 },
                 "Raiju": {
                     "Evidence": ["EMF5", "Ghost Orbs", "D.O.T.S"],
                     "Forced": null,
+                    "Speed": ["Slow Speed", "Fast Speed"],
                 },
                 "Revenant": {
                     "Evidence": ["Ghost Orbs", "Freezing Temps", "Ghost Writing"],
                     "Forced": null,
+                    "Speed": ["Slow Speed"],
                 },
                 "Shade": {
                     "Evidence": ["EMF5", "Freezing Temps", "Ghost Writing"],
                     "Forced": null,
+                    "Speed": ["Normal Speed"],
                 },
                 "Spirit": {
                     "Evidence": ["EMF5", "Spirit Box", "Ghost Writing"],
                     "Forced": null,
+                    "Speed": ["Normal Speed"],
                 },
                 "Thaye": {
                     "Evidence": ["Ghost Orbs", "D.O.T.S", "Ghost Writing"],
                     "Forced": null,
+                    "Speed": null,
                 },
                 "The Mimic": {
                     "Evidence": ["Spirit Box", "Freezing Temps", "Ultraviolet"],
-                    "Forced": "Ghost Orbs",
+                    "Forced": null,
+                    "Speed": null,
                 },
                 "The Twins": {
                     "Evidence": ["EMF5", "Spirit Box", "Freezing Temps"],
                     "Forced": null,
+                    "Speed": null,
                 },
                 "Wraith": {
                     "Evidence": ["EMF5", "Spirit Box", "D.O.T.S"],
                     "Forced": null,
+                    "Speed": ["Normal Speed"],
                 },
                 "Yokai": {
                     "Evidence": ["Ghost Orbs", "Spirit Box", "D.O.T.S"],
                     "Forced": null,
+                    "Speed": ["Normal Speed"],
                 },
                 "Yurei": {
                     "Evidence": ["Ghost Orbs", "Freezing Temps", "D.O.T.S"],
                     "Forced": null,
+                    "Speed": ["Normal Speed"],
                 },
             }
         </script>
@@ -173,33 +203,33 @@
         </div>
         
         <div id="GhostSelect">
-            <div class="ghost item" onclick="mark_ghost(this)" lang="-">Banshee</div>
-            <div class="ghost item" onclick="mark_ghost(this)" lang="-">Dayan</div>
-            <div class="ghost item" onclick="mark_ghost(this)" lang="-">Deogen</div>
-            <div class="ghost item" onclick="mark_ghost(this)" lang="-">Demon</div>
-            <div class="ghost item" onclick="mark_ghost(this)" lang="-">Gallu</div>
-            <div class="ghost item" onclick="mark_ghost(this)" lang="-">Goryo</div>
-            <div class="ghost item" onclick="mark_ghost(this)" lang="-">Hantu</div>
-            <div class="ghost item" onclick="mark_ghost(this)" lang="-">Jinn</div>
-            <div class="ghost item" onclick="mark_ghost(this)" lang="-">Mare</div>
-            <div class="ghost item" onclick="mark_ghost(this)" lang="-">Moroi</div>
-            <div class="ghost item" onclick="mark_ghost(this)" lang="-">Myling</div>
-            <div class="ghost item" onclick="mark_ghost(this)" lang="-">Obake</div>
-            <div class="ghost item" onclick="mark_ghost(this)" lang="-">Obambo</div>
-            <div class="ghost item" onclick="mark_ghost(this)" lang="-">Oni</div>
-            <div class="ghost item" onclick="mark_ghost(this)" lang="-">Onryo</div>
-            <div class="ghost item" onclick="mark_ghost(this)" lang="-">Phantom</div>
-            <div class="ghost item" onclick="mark_ghost(this)" lang="-">Poltergeist</div>
-            <div class="ghost item" onclick="mark_ghost(this)" lang="-">Raiju</div>
-            <div class="ghost item" onclick="mark_ghost(this)" lang="-">Revenant</div>
-            <div class="ghost item" onclick="mark_ghost(this)" lang="-">Shade</div>
-            <div class="ghost item" onclick="mark_ghost(this)" lang="-">Spirit</div>
-            <div class="ghost item" onclick="mark_ghost(this)" lang="-">Thaye</div>
-            <div class="ghost item" onclick="mark_ghost(this)" lang="-">The Mimic</div>
-            <div class="ghost item" onclick="mark_ghost(this)" lang="-">The Twins</div>
-            <div class="ghost item" onclick="mark_ghost(this)" lang="-">Wraith</div>
-            <div class="ghost item" onclick="mark_ghost(this)" lang="-">Yokai</div>
-            <div class="ghost item" onclick="mark_ghost(this)" lang="-">Yurei</div>
+            <div class="ghost item" onclick="mark_ghost(this)" lang="-">Banshee<p>&nbsp;(50)</p></div>
+            <div class="ghost item" onclick="mark_ghost(this)" lang="-">Dayan<p>&nbsp;(45-65)</p></div>
+            <div class="ghost item" onclick="mark_ghost(this)" lang="-">Deogen<p>&nbsp;(40)</p></div>
+            <div class="ghost item" onclick="mark_ghost(this)" lang="-">Demon<p>&nbsp;(70)</p></div>
+            <div class="ghost item" onclick="mark_ghost(this)" lang="-">Gallu<p>&nbsp;(40-60)</p></div>
+            <div class="ghost item" onclick="mark_ghost(this)" lang="-">Goryo<p>&nbsp;(50)</p></div>
+            <div class="ghost item" onclick="mark_ghost(this)" lang="-">Hantu<p>&nbsp;(50)</p></div>
+            <div class="ghost item" onclick="mark_ghost(this)" lang="-">Jinn<p>&nbsp;(50)</p></div>
+            <div class="ghost item" onclick="mark_ghost(this)" lang="-">Mare<p>&nbsp;(40-60)</p></div>
+            <div class="ghost item" onclick="mark_ghost(this)" lang="-">Moroi<p>&nbsp;(50)</p></div>
+            <div class="ghost item" onclick="mark_ghost(this)" lang="-">Myling<p>&nbsp;(50)</p></div>
+            <div class="ghost item" onclick="mark_ghost(this)" lang="-">Obake<p>&nbsp;(50)</p></div>
+            <div class="ghost item" onclick="mark_ghost(this)" lang="-">Obambo<p>&nbsp;(10-65)</p></div>
+            <div class="ghost item" onclick="mark_ghost(this)" lang="-">Oni<p>&nbsp;(50)</p></div>
+            <div class="ghost item" onclick="mark_ghost(this)" lang="-">Onryo<p>&nbsp;(40-60)</p></div>
+            <div class="ghost item" onclick="mark_ghost(this)" lang="-">Phantom<p>&nbsp;(50)</p></div>
+            <div class="ghost item" onclick="mark_ghost(this)" lang="-">Poltergeist<p>&nbsp;(50)</p></div>
+            <div class="ghost item" onclick="mark_ghost(this)" lang="-">Raiju<p>&nbsp;(50-65)</p></div>
+            <div class="ghost item" onclick="mark_ghost(this)" lang="-">Revenant<p>&nbsp;(50)</p></div>
+            <div class="ghost item" onclick="mark_ghost(this)" lang="-">Shade<p>&nbsp;(0-35)</p></div>
+            <div class="ghost item" onclick="mark_ghost(this)" lang="-">Spirit<p>&nbsp;(50)</p></div>
+            <div class="ghost item" onclick="mark_ghost(this)" lang="-">Thaye<p>&nbsp;(15-75)</p></div>
+            <div class="ghost item" onclick="mark_ghost(this)" lang="-">The Mimic<p>&nbsp;(?)</p></div>
+            <div class="ghost item" onclick="mark_ghost(this)" lang="-">The Twins<p>&nbsp;(50)</p></div>
+            <div class="ghost item" onclick="mark_ghost(this)" lang="-">Wraith<p>&nbsp;(50)</p></div>
+            <div class="ghost item" onclick="mark_ghost(this)" lang="-">Yokai<p>&nbsp;(50-80)</p></div>
+            <div class="ghost item" onclick="mark_ghost(this)" lang="-">Yurei<p>&nbsp;(50)</p></div>
         </div>
 
         <div id="ExtraSelect">
@@ -208,37 +238,43 @@
             <div class="extra item" ondblclick="window.location.reload()" lang="-">Reset</div>
             <div class="extra item" id="TimeStart" onclick="" lang="o">Start</div>
             <div class="extra item" id="Timer" lang="-" style="font-family: 'Roboto', sans-serif; color: darkgray;">00:00</div>
+            <div class="extra item" onclick="" lang="-"></div>
+            <div class="extra item" onclick="speed_option = 1; applyData();" lang="-">Slow Speed</div>
+            <div class="extra item" onclick="speed_option = 2; applyData();" lang="-">Normal Speed</div>
+            <div class="extra item" onclick="speed_option = 3; applyData();" lang="-">Fast Speed</div>
         </div>
 
         <script>
             function mark_evidence(obj) {
-                if (obj.lang == "-" && found_evidence.length < evidence_amount) { change_visual(obj, "o"); obj.lang = "o"; }
-                else if (obj.lang == "o" || (obj.lang == "-")) { change_visual(obj, "x"); obj.lang = "x"; }
-                else { change_visual(obj, "-"); obj.lang = "-"; }
+                if (obj.lang == "-" && found_evidence.length < evidence_amount) { change_visual(obj, "o"); }
+                else if (obj.lang == "o" || (obj.lang == "-")) { change_visual(obj, "x"); }
+                else { change_visual(obj, "-"); }
                 update();
             }
 
             function mark_ghost(obj) {
                 if (obj.lang == "-") { found_ghost = obj.innerHTML; }
-                else if (obj.lang == "o") { change_visual(obj, "x"); obj.lang = "x"; found_ghost = null; }
-                else  { change_visual(obj, "-"); obj.lang = "-"; }
+                else if (obj.lang == "o") { change_visual(obj, "x"); found_ghost = null; }
+                else  { change_visual(obj, "-"); }
                 update();
             }
 
-         
             function change_visual(obj, label) {
                 switch (label) {
                     case "-":
                         obj.style.textDecoration = "none";
                         obj.style.color = "white";
+                        obj.lang = "-";
                     break;
                     case "x":
                         obj.style.textDecoration = "line-through";
                         obj.style.color = "black";
+                        obj.lang = "x";
                     break;
                     case "o":
                         obj.style.textDecoration = "none";
-                        obj.style.color = "green";
+                        obj.style.color = "lightgreen";
+                        obj.lang = "o";
                     break;
                 }
             }
@@ -246,7 +282,7 @@
             function ruleout(name) {
                 const ghosts = document.getElementsByClassName('ghost');
                 for (let gIndex = 0; gIndex < ghosts.length; gIndex++)
-                    if (ghosts[gIndex].innerHTML == name) 
+                    if (ghosts[gIndex].innerHTML.replace(/<p\b[^>]*>.*?<\/p>/gi, "") == name) 
                         ghosts[gIndex].style.filter = "brightness(50%)";
 
             }
@@ -265,10 +301,8 @@
                 }
 
                 for (let gIndex = 0; gIndex < ghosts.length; gIndex++) {
-                    if (ghosts[gIndex].lang == "o" && ghosts[gIndex].innerHTML != found_ghost)
-                        { change_visual(ghosts[gIndex], "-"); ghosts[gIndex].lang = "-"; }
-                    else if (ghosts[gIndex].innerHTML == found_ghost)
-                        { change_visual(ghosts[gIndex], "o"); ghosts[gIndex].lang = "o"; } 
+                    if (ghosts[gIndex].lang == "o" && ghosts[gIndex].innerHTML != found_ghost) change_visual(ghosts[gIndex], "-");  
+                    else if (ghosts[gIndex].innerHTML == found_ghost) change_visual(ghosts[gIndex], "o");
                     if (ghosts[gIndex].lang == "x") crossed_ghosts.push(ghosts[gIndex].innerHTML);
                 }
                 applyData();
@@ -279,7 +313,7 @@
                 const ghosts = document.getElementsByClassName("ghost");
                 for (let gIndex = 0; gIndex < ghosts.length; gIndex++) {
                     ghosts[gIndex].style.filter = "brightness(100%)";
-                    let name = ghosts[gIndex].innerHTML;
+                    let name = ghosts[gIndex].innerHTML.replace(/<p\b[^>]*>.*?<\/p>/gi, "");
 
                     if (ghost_data[name]) {
                         for (let eIndex = 0; eIndex < found_evidence.length; eIndex++)
@@ -295,14 +329,14 @@
                         if (found_evidence.length == evidence_amount && 
                             !found_evidence.includes(ghost_data[name].Forced)
                             && ghost_data[name].Forced)
-                                ruleout(name);
+                                if (evidence_amount) ruleout(name);
 
                         let missing_evidence = 0;
                         for (let eIndex = 0; eIndex < crossed_evidence.length; eIndex++) {
                             if (ghost_data[name].Evidence.includes(crossed_evidence[eIndex]))
                                 missing_evidence++;
                         }
-                        if (evidence_amount - missing_evidence <= 0) ruleout(name);
+                        if (evidence_amount - missing_evidence < 0 && evidence_amount != 0) ruleout(name);
                     }
 
                 }
@@ -312,14 +346,41 @@
                     ruleout("Dayan");  
                     change_visual(extras[0], "-");
                 } else change_visual(extras[0], "x");
+      
+                switch (speed_option) {
+                    case 1:
+                        if (extras[6].lang == "x") { change_visual(extras[6], "-"); speed_option = 0; break; }
+                        change_visual(extras[6], "x"); 
+                        change_visual(extras[7], "-"); 
+                        change_visual(extras[8], "-"); 
+                    break;
+                    case 2:
+                        if (extras[7].lang == "x") { change_visual(extras[7], "-"); speed_option = 0; break; }
+                        change_visual(extras[6], "-"); 
+                        change_visual(extras[7], "x"); 
+                        change_visual(extras[8], "-"); 
+                    break;
+                    case 3:
+                        if (extras[8].lang == "x") { change_visual(extras[8], "-"); speed_option = 0; break; }
+                        change_visual(extras[6], "-"); 
+                        change_visual(extras[7], "-"); 
+                        change_visual(extras[8], "x"); 
+                    break;
+                }
 
-                
+                for (let gIndex = 0; gIndex < ghosts.length && speed_option; gIndex++) {
+                    let name = ghosts[gIndex].innerHTML.replace(/<p\b[^>]*>.*?<\/p>/gi, "");
+                    console.log(name);
+                    if (speed_option == 1 && ghost_data[name].Speed && !ghost_data[name].Speed.includes("Slow Speed")) ruleout(name);
+                    else if (speed_option == 2 && ghost_data[name].Speed && !ghost_data[name].Speed.includes("Normal Speed")) ruleout(name);
+                    else if (speed_option == 3 && ghost_data[name].Speed && !ghost_data[name].Speed.includes("Fast Speed")) ruleout(name);
+                }
+
             }
 
             function toggleEvidence() {
                 evidence_amount--;
                 if (evidence_amount < 0) evidence_amount = 3;
-
                 document.getElementsByClassName("extra")[1].innerHTML = `${evidence_amount} Evidence`;
                 update();
             }

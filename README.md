@@ -9,6 +9,8 @@ An improved version of the in-game journal in Phasmophobia. Designed to be used 
 - Journal will rule out female only ghosts when the ghost is selected as male.
 - Evidence can be crossed out on lower evidence runs without ruling out potential ghosts.
 - Timer included to make tracking certain events easier.
+- List shows ghost hunting thresholds.
+- Option to filter out ghosts by their observed speed when _unaware of the player_.
 
 ## How do I use this?
 
