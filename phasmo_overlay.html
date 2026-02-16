@@ -33,10 +33,14 @@
                 text-decoration-color: red;
                 text-shadow: 2px 2px black;
             } 
-            .item:nth-of-type(6):hover, 
-            .item:nth-of-type(5):hover { filter: none !important; cursor: auto !important; }
+            .extra:nth-of-type(6):hover, 
+            .extra:nth-of-type(5):hover { filter: none !important; cursor: auto !important; }
             .item:hover { filter:brightness(90%); }
             p { color: #e0b255; }
+
+            .state-minus { color: white; text-decoration: none; }
+            .state-x { color: black; text-decoration: line-through; }
+            .state-o { color: lightgreen; text-decoration: none; }
         </style>
     </head>
     <body>
@@ -193,89 +197,79 @@
         </script>
 
         <div id="ItemSelect"> 
-            <div class="evidence item" onclick="mark_evidence(this)" lang="-">EMF5</div>
-            <div class="evidence item" onclick="mark_evidence(this)" lang="-">Ghost Orbs</div>
-            <div class="evidence item" onclick="mark_evidence(this)" lang="-">Spirit Box</div>
-            <div class="evidence item" onclick="mark_evidence(this)" lang="-">Freezing Temps</div>
-            <div class="evidence item" onclick="mark_evidence(this)" lang="-">Ultraviolet</div>
-            <div class="evidence item" onclick="mark_evidence(this)" lang="-">Ghost Writing</div>
-            <div class="evidence item" onclick="mark_evidence(this)" lang="-">D.O.T.S</div>
+            <div class="evidence item" onclick="mark_evidence(this)" data-symbol="-">EMF5</div>
+            <div class="evidence item" onclick="mark_evidence(this)" data-symbol="-">Ghost Orbs</div>
+            <div class="evidence item" onclick="mark_evidence(this)" data-symbol="-">Spirit Box</div>
+            <div class="evidence item" onclick="mark_evidence(this)" data-symbol="-">Freezing Temps</div>
+            <div class="evidence item" onclick="mark_evidence(this)" data-symbol="-">Ultraviolet</div>
+            <div class="evidence item" onclick="mark_evidence(this)" data-symbol="-">Ghost Writing</div>
+            <div class="evidence item" onclick="mark_evidence(this)" data-symbol="-">D.O.T.S</div>
         </div>
         
         <div id="GhostSelect">
-            <div class="ghost item" onclick="mark_ghost(this)" lang="-">Banshee<p>&nbsp;(50)</p></div>
-            <div class="ghost item" onclick="mark_ghost(this)" lang="-">Dayan<p>&nbsp;(45-65)</p></div>
-            <div class="ghost item" onclick="mark_ghost(this)" lang="-">Deogen<p>&nbsp;(40)</p></div>
-            <div class="ghost item" onclick="mark_ghost(this)" lang="-">Demon<p>&nbsp;(70)</p></div>
-            <div class="ghost item" onclick="mark_ghost(this)" lang="-">Gallu<p>&nbsp;(40-60)</p></div>
-            <div class="ghost item" onclick="mark_ghost(this)" lang="-">Goryo<p>&nbsp;(50)</p></div>
-            <div class="ghost item" onclick="mark_ghost(this)" lang="-">Hantu<p>&nbsp;(50)</p></div>
-            <div class="ghost item" onclick="mark_ghost(this)" lang="-">Jinn<p>&nbsp;(50)</p></div>
-            <div class="ghost item" onclick="mark_ghost(this)" lang="-">Mare<p>&nbsp;(40-60)</p></div>
-            <div class="ghost item" onclick="mark_ghost(this)" lang="-">Moroi<p>&nbsp;(50)</p></div>
-            <div class="ghost item" onclick="mark_ghost(this)" lang="-">Myling<p>&nbsp;(50)</p></div>
-            <div class="ghost item" onclick="mark_ghost(this)" lang="-">Obake<p>&nbsp;(50)</p></div>
-            <div class="ghost item" onclick="mark_ghost(this)" lang="-">Obambo<p>&nbsp;(10-65)</p></div>
-            <div class="ghost item" onclick="mark_ghost(this)" lang="-">Oni<p>&nbsp;(50)</p></div>
-            <div class="ghost item" onclick="mark_ghost(this)" lang="-">Onryo<p>&nbsp;(40-60)</p></div>
-            <div class="ghost item" onclick="mark_ghost(this)" lang="-">Phantom<p>&nbsp;(50)</p></div>
-            <div class="ghost item" onclick="mark_ghost(this)" lang="-">Poltergeist<p>&nbsp;(50)</p></div>
-            <div class="ghost item" onclick="mark_ghost(this)" lang="-">Raiju<p>&nbsp;(50-65)</p></div>
-            <div class="ghost item" onclick="mark_ghost(this)" lang="-">Revenant<p>&nbsp;(50)</p></div>
-            <div class="ghost item" onclick="mark_ghost(this)" lang="-">Shade<p>&nbsp;(0-35)</p></div>
-            <div class="ghost item" onclick="mark_ghost(this)" lang="-">Spirit<p>&nbsp;(50)</p></div>
-            <div class="ghost item" onclick="mark_ghost(this)" lang="-">Thaye<p>&nbsp;(15-75)</p></div>
-            <div class="ghost item" onclick="mark_ghost(this)" lang="-">The Mimic<p>&nbsp;(?)</p></div>
-            <div class="ghost item" onclick="mark_ghost(this)" lang="-">The Twins<p>&nbsp;(50)</p></div>
-            <div class="ghost item" onclick="mark_ghost(this)" lang="-">Wraith<p>&nbsp;(50)</p></div>
-            <div class="ghost item" onclick="mark_ghost(this)" lang="-">Yokai<p>&nbsp;(50-80)</p></div>
-            <div class="ghost item" onclick="mark_ghost(this)" lang="-">Yurei<p>&nbsp;(50)</p></div>
+            <div class="ghost item" onclick="mark_ghost(this)" data-symbol="-">Banshee<p>&nbsp;(50)</p></div>
+            <div class="ghost item" onclick="mark_ghost(this)" data-symbol="-">Dayan<p>&nbsp;(45-65)</p></div>
+            <div class="ghost item" onclick="mark_ghost(this)" data-symbol="-">Deogen<p>&nbsp;(40)</p></div>
+            <div class="ghost item" onclick="mark_ghost(this)" data-symbol="-">Demon<p>&nbsp;(70)</p></div>
+            <div class="ghost item" onclick="mark_ghost(this)" data-symbol="-">Gallu<p>&nbsp;(40-60)</p></div>
+            <div class="ghost item" onclick="mark_ghost(this)" data-symbol="-">Goryo<p>&nbsp;(50)</p></div>
+            <div class="ghost item" onclick="mark_ghost(this)" data-symbol="-">Hantu<p>&nbsp;(50)</p></div>
+            <div class="ghost item" onclick="mark_ghost(this)" data-symbol="-">Jinn<p>&nbsp;(50)</p></div>
+            <div class="ghost item" onclick="mark_ghost(this)" data-symbol="-">Mare<p>&nbsp;(40-60)</p></div>
+            <div class="ghost item" onclick="mark_ghost(this)" data-symbol="-">Moroi<p>&nbsp;(50)</p></div>
+            <div class="ghost item" onclick="mark_ghost(this)" data-symbol="-">Myling<p>&nbsp;(50)</p></div>
+            <div class="ghost item" onclick="mark_ghost(this)" data-symbol="-">Obake<p>&nbsp;(50)</p></div>
+            <div class="ghost item" onclick="mark_ghost(this)" data-symbol="-">Obambo<p>&nbsp;(10-65)</p></div>
+            <div class="ghost item" onclick="mark_ghost(this)" data-symbol="-">Oni<p>&nbsp;(50)</p></div>
+            <div class="ghost item" onclick="mark_ghost(this)" data-symbol="-">Onryo<p>&nbsp;(40-60)</p></div>
+            <div class="ghost item" onclick="mark_ghost(this)" data-symbol="-">Phantom<p>&nbsp;(50)</p></div>
+            <div class="ghost item" onclick="mark_ghost(this)" data-symbol="-">Poltergeist<p>&nbsp;(50)</p></div>
+            <div class="ghost item" onclick="mark_ghost(this)" data-symbol="-">Raiju<p>&nbsp;(50-65)</p></div>
+            <div class="ghost item" onclick="mark_ghost(this)" data-symbol="-">Revenant<p>&nbsp;(50)</p></div>
+            <div class="ghost item" onclick="mark_ghost(this)" data-symbol="-">Shade<p>&nbsp;(0-35)</p></div>
+            <div class="ghost item" onclick="mark_ghost(this)" data-symbol="-">Spirit<p>&nbsp;(50)</p></div>
+            <div class="ghost item" onclick="mark_ghost(this)" data-symbol="-">Thaye<p>&nbsp;(15-75)</p></div>
+            <div class="ghost item" onclick="mark_ghost(this)" data-symbol="-">The Mimic<p>&nbsp;(?)</p></div>
+            <div class="ghost item" onclick="mark_ghost(this)" data-symbol="-">The Twins<p>&nbsp;(50)</p></div>
+            <div class="ghost item" onclick="mark_ghost(this)" data-symbol="-">Wraith<p>&nbsp;(50)</p></div>
+            <div class="ghost item" onclick="mark_ghost(this)" data-symbol="-">Yokai<p>&nbsp;(50-80)</p></div>
+            <div class="ghost item" onclick="mark_ghost(this)" data-symbol="-">Yurei<p>&nbsp;(50)</p></div>
         </div>
 
         <div id="ExtraSelect">
-            <div class="extra item" onclick="isMale = !isMale; applyData();" lang="-">Male Ghost</div>
-            <div class="extra item" onclick="toggleEvidence()" lang="-">3 Evidence</div>
-            <div class="extra item" ondblclick="window.location.reload()" lang="-">Reset</div>
-            <div class="extra item" id="TimeStart" onclick="" lang="o">Start</div>
-            <div class="extra item" id="Timer" lang="-" style="font-family: 'Roboto', sans-serif; color: darkgray;">00:00</div>
-            <div class="extra item" onclick="" lang="-"></div>
-            <div class="extra item" onclick="speed_option = 1; applyData();" lang="-">Slow Speed</div>
-            <div class="extra item" onclick="speed_option = 2; applyData();" lang="-">Normal Speed</div>
-            <div class="extra item" onclick="speed_option = 3; applyData();" lang="-">Fast Speed</div>
+            <div class="extra item" onclick="isMale = !isMale; applyData();" data-symbol="-">Male Ghost</div>
+            <div class="extra item" onclick="toggleEvidence()" data-symbol="-">3 Evidence</div>
+            <div class="extra item" ondblclick="window.location.reload()" data-symbol="-">Reset</div>
+            <div class="extra item" id="TimeStart" onclick="" data-symbol="o">Start</div>
+            <div class="extra item" id="Timer" data-symbol="-" style="font-family: 'Roboto', sans-serif; color: darkgray;">00:00</div>
+            <div class="extra item" onclick="" data-symbol="-"></div>
+            <div class="extra item" onclick="speed_option = 1; applyData();" data-symbol="-">Slow Speed</div>
+            <div class="extra item" onclick="speed_option = 2; applyData();" data-symbol="-">Normal Speed</div>
+            <div class="extra item" onclick="speed_option = 3; applyData();" data-symbol="-">Fast Speed</div>
         </div>
 
         <script>
             function mark_evidence(obj) {
-                if (obj.lang == "-" && found_evidence.length < evidence_amount) { change_visual(obj, "o"); }
-                else if (obj.lang == "o" || (obj.lang == "-")) { change_visual(obj, "x"); }
+                if (obj.dataset.symbol == "-" && found_evidence.length < evidence_amount) { change_visual(obj, "o"); }
+                else if (obj.dataset.symbol == "o" || (obj.dataset.symbol == "-")) { change_visual(obj, "x"); }
                 else { change_visual(obj, "-"); }
                 update();
             }
 
             function mark_ghost(obj) {
-                if (obj.lang == "-") { found_ghost = obj.innerHTML; }
-                else if (obj.lang == "o") { change_visual(obj, "x"); found_ghost = null; }
+                if (obj.dataset.symbol == "-") { found_ghost = obj.innerHTML; }
+                else if (obj.dataset.symbol == "o") { change_visual(obj, "x"); found_ghost = null; }
                 else  { change_visual(obj, "-"); }
                 update();
             }
 
             function change_visual(obj, label) {
+                obj.dataset.symbol = label;
+                obj.classList.remove("state-minus", "state-x", "state-o");
                 switch (label) {
-                    case "-":
-                        obj.style.textDecoration = "none";
-                        obj.style.color = "white";
-                        obj.lang = "-";
-                    break;
-                    case "x":
-                        obj.style.textDecoration = "line-through";
-                        obj.style.color = "black";
-                        obj.lang = "x";
-                    break;
-                    case "o":
-                        obj.style.textDecoration = "none";
-                        obj.style.color = "lightgreen";
-                        obj.lang = "o";
-                    break;
+                    case "-": obj.classList.add("state-minus"); break;
+                    case "x": obj.classList.add("state-x");     break;
+                    case "o": obj.classList.add("state-o");     break;
                 }
             }
 
@@ -296,14 +290,14 @@
                 found_evidence = [];    
                 
                 for (let eIndex = 0; eIndex < evidence.length; eIndex++) {
-                    if (evidence[eIndex].lang == "x") crossed_evidence.push(evidence[eIndex].innerHTML);
-                    if (evidence[eIndex].lang == "o") found_evidence.push(evidence[eIndex].innerHTML);
+                    if (evidence[eIndex].dataset.symbol == "x") crossed_evidence.push(evidence[eIndex].innerHTML);
+                    if (evidence[eIndex].dataset.symbol == "o") found_evidence.push(evidence[eIndex].innerHTML);
                 }
 
                 for (let gIndex = 0; gIndex < ghosts.length; gIndex++) {
-                    if (ghosts[gIndex].lang == "o" && ghosts[gIndex].innerHTML != found_ghost) change_visual(ghosts[gIndex], "-");  
+                    if (ghosts[gIndex].dataset.symbol == "o" && ghosts[gIndex].innerHTML != found_ghost) change_visual(ghosts[gIndex], "-");  
                     else if (ghosts[gIndex].innerHTML == found_ghost) change_visual(ghosts[gIndex], "o");
-                    if (ghosts[gIndex].lang == "x") crossed_ghosts.push(ghosts[gIndex].innerHTML);
+                    if (ghosts[gIndex].dataset.symbol == "x") crossed_ghosts.push(ghosts[gIndex].innerHTML);
                 }
                 applyData();
             }
@@ -349,19 +343,19 @@
       
                 switch (speed_option) {
                     case 1:
-                        if (extras[6].lang == "x") { change_visual(extras[6], "-"); speed_option = 0; break; }
+                        if (extras[6].dataset.symbol == "x" && speed_option > 0) { change_visual(extras[6], "-"); speed_option = 0; break; }
                         change_visual(extras[6], "x"); 
                         change_visual(extras[7], "-"); 
                         change_visual(extras[8], "-"); 
                     break;
                     case 2:
-                        if (extras[7].lang == "x") { change_visual(extras[7], "-"); speed_option = 0; break; }
+                        if (extras[7].dataset.symbol == "x" && speed_option > 0) { change_visual(extras[7], "-"); speed_option = 0; break; }
                         change_visual(extras[6], "-"); 
                         change_visual(extras[7], "x"); 
                         change_visual(extras[8], "-"); 
                     break;
                     case 3:
-                        if (extras[8].lang == "x") { change_visual(extras[8], "-"); speed_option = 0; break; }
+                        if (extras[8].dataset.symbol == "x" && speed_option > 0) { change_visual(extras[8], "-"); speed_option = 0; break; }
                         change_visual(extras[6], "-"); 
                         change_visual(extras[7], "-"); 
                         change_visual(extras[8], "x"); 
@@ -370,12 +364,11 @@
 
                 for (let gIndex = 0; gIndex < ghosts.length && speed_option; gIndex++) {
                     let name = ghosts[gIndex].innerHTML.replace(/<p\b[^>]*>.*?<\/p>/gi, "");
-                    console.log(name);
-                    if (speed_option == 1 && ghost_data[name].Speed && !ghost_data[name].Speed.includes("Slow Speed")) ruleout(name);
-                    else if (speed_option == 2 && ghost_data[name].Speed && !ghost_data[name].Speed.includes("Normal Speed")) ruleout(name);
-                    else if (speed_option == 3 && ghost_data[name].Speed && !ghost_data[name].Speed.includes("Fast Speed")) ruleout(name);
+                    if (Math.abs(speed_option) == 1 && ghost_data[name].Speed && !ghost_data[name].Speed.includes("Slow Speed")) ruleout(name);
+                    else if (Math.abs(speed_option) == 2 && ghost_data[name].Speed && !ghost_data[name].Speed.includes("Normal Speed")) ruleout(name);
+                    else if (Math.abs(speed_option) == 3 && ghost_data[name].Speed && !ghost_data[name].Speed.includes("Fast Speed")) ruleout(name);
                 }
-
+                speed_option = -1 * Math.abs(speed_option);
             }
 
             function toggleEvidence() {
