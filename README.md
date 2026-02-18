@@ -10,7 +10,7 @@ An improved version of the in-game journal in Phasmophobia. Designed to be used 
 - Evidence can be crossed out on lower evidence runs without ruling out potential ghosts.
 - Timer included to make tracking certain events easier.
 - List shows ghost hunting thresholds.
-- Option to filter out ghosts by their observed speed when _unaware of the player_.
+- Option to filter out ghosts by their observed speed when _unaware of the player_ (see below).
 
 ## How do I use this?
 
@@ -22,3 +22,11 @@ Either download the provided `.html` file or use the live version (coming soon) 
 ## I found an issue with something, what can I do?
 
 Contact me directly using my business email (business@michaelwarmbier.com) or make a new issue on this repository. Small changes will be added over time to round everything out, reflected in this README.
+
+## How do I use the ghost speed options?
+
+The speed options are meant to rule out ghosts based on their speed while hunting, specifically when they do not have line of sight of you. If the ghost sounds faster than expected, you may use fast speed etc. If you are unsure or you are under conditions that change ghost speed, ignore this option. Ghosts with varied speed will not be ruled out by this.
+
+## Appearance
+
+<p align="center"><img src="preview.png"></p>

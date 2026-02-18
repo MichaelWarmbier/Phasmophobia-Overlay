@@ -7,6 +7,9 @@
         <title>Phasmophobia Stream Overlay</title>
        
         <style>
+            body { background-color: #404040; }
+            #SelectWrap { float: left; }
+
             #GhostSelect, #ItemSelect, #ExtraSelect {
                 height: max-content;
                 width: 400px;
@@ -16,6 +19,7 @@
                 flex-wrap: wrap;
                 margin-bottom: 20px;
                 user-select: none;
+                position: relative;
             }
             .item {
                 width: 30%;
@@ -33,14 +37,23 @@
                 text-decoration-color: red;
                 text-shadow: 2px 2px black;
             } 
-            .extra:nth-of-type(6):hover, 
-            .extra:nth-of-type(5):hover { filter: none !important; cursor: auto !important; }
+            .extra:nth-of-type(6):hover { filter: none !important; cursor: auto !important; }
             .item:hover { filter:brightness(90%); }
             p { color: #e0b255; }
 
             .state-minus { color: white; text-decoration: none; }
             .state-x, .state-y { background-color: #3b3b3b; color: gray; }
             .state-o { box-shadow: 1px 1px black, -1px 1px black, 1px -1px black, -1px -1px black; border-radius: 50%; }
+
+            #Help {
+                width: 400px;
+                height: max-content;
+                float: left;
+                margin: 10px;
+                color: #c9c9c9;
+                font-family: 'Roboto', sans-serif;
+                display: none;
+            }
         </style>
     </head>
     <body>
@@ -50,12 +63,13 @@
             let crossed_evidence = [];
             let found_ghost = null;
             let found_evidence = [];
-            let isMale = false;
+            let is_male = false;
             let evidence_amount = 3;
             let timer_state = "o";
             let timestamp = Math.floor((new Date()).getTime() / 1000);
             let timer_value = 0;
             let speed_option = 0;
+            let show_help = false;
 
             const ghost_data = {
                 "Banshee": {
@@ -169,7 +183,7 @@
                     "Speed": null,
                 },
                 "The Mimic": {
-                    "Evidence": ["Spirit Box", "Freezing Temps", "Ultraviolet"],
+                    "Evidence": ["Spirit Box", "Freezing Temps", "Ultraviolet", "Ghost Orbs"],
                     "Forced": "Ghost Orbs",
                     "Speed": null,
                 },
@@ -196,56 +210,69 @@
             }
         </script>
 
-        <div id="ItemSelect"> 
-            <div class="evidence item" onclick="mark_evidence(this)" data-symbol="-">EMF5</div>
-            <div class="evidence item" onclick="mark_evidence(this)" data-symbol="-">Ghost Orbs</div>
-            <div class="evidence item" onclick="mark_evidence(this)" data-symbol="-">Spirit Box</div>
-            <div class="evidence item" onclick="mark_evidence(this)" data-symbol="-">Freezing Temps</div>
-            <div class="evidence item" onclick="mark_evidence(this)" data-symbol="-">Ultraviolet</div>
-            <div class="evidence item" onclick="mark_evidence(this)" data-symbol="-">Ghost Writing</div>
-            <div class="evidence item" onclick="mark_evidence(this)" data-symbol="-">D.O.T.S</div>
-        </div>
-        
-        <div id="GhostSelect">
-            <div class="ghost item" onclick="mark_ghost(this)" data-symbol="-">Banshee<p>&nbsp;(50)</p></div>
-            <div class="ghost item" onclick="mark_ghost(this)" data-symbol="-">Dayan<p>&nbsp;(45-65)</p></div>
-            <div class="ghost item" onclick="mark_ghost(this)" data-symbol="-">Deogen<p>&nbsp;(40)</p></div>
-            <div class="ghost item" onclick="mark_ghost(this)" data-symbol="-">Demon<p>&nbsp;(70)</p></div>
-            <div class="ghost item" onclick="mark_ghost(this)" data-symbol="-">Gallu<p>&nbsp;(40-60)</p></div>
-            <div class="ghost item" onclick="mark_ghost(this)" data-symbol="-">Goryo<p>&nbsp;(50)</p></div>
-            <div class="ghost item" onclick="mark_ghost(this)" data-symbol="-">Hantu<p>&nbsp;(50)</p></div>
-            <div class="ghost item" onclick="mark_ghost(this)" data-symbol="-">Jinn<p>&nbsp;(50)</p></div>
-            <div class="ghost item" onclick="mark_ghost(this)" data-symbol="-">Mare<p>&nbsp;(40-60)</p></div>
-            <div class="ghost item" onclick="mark_ghost(this)" data-symbol="-">Moroi<p>&nbsp;(50)</p></div>
-            <div class="ghost item" onclick="mark_ghost(this)" data-symbol="-">Myling<p>&nbsp;(50)</p></div>
-            <div class="ghost item" onclick="mark_ghost(this)" data-symbol="-">Obake<p>&nbsp;(50)</p></div>
-            <div class="ghost item" onclick="mark_ghost(this)" data-symbol="-">Obambo<p>&nbsp;(10-65)</p></div>
-            <div class="ghost item" onclick="mark_ghost(this)" data-symbol="-">Oni<p>&nbsp;(50)</p></div>
-            <div class="ghost item" onclick="mark_ghost(this)" data-symbol="-">Onryo<p>&nbsp;(40-60)</p></div>
-            <div class="ghost item" onclick="mark_ghost(this)" data-symbol="-">Phantom<p>&nbsp;(50)</p></div>
-            <div class="ghost item" onclick="mark_ghost(this)" data-symbol="-">Poltergeist<p>&nbsp;(50)</p></div>
-            <div class="ghost item" onclick="mark_ghost(this)" data-symbol="-">Raiju<p>&nbsp;(50-65)</p></div>
-            <div class="ghost item" onclick="mark_ghost(this)" data-symbol="-">Revenant<p>&nbsp;(50)</p></div>
-            <div class="ghost item" onclick="mark_ghost(this)" data-symbol="-">Shade<p>&nbsp;(0-35)</p></div>
-            <div class="ghost item" onclick="mark_ghost(this)" data-symbol="-">Spirit<p>&nbsp;(50)</p></div>
-            <div class="ghost item" onclick="mark_ghost(this)" data-symbol="-">Thaye<p>&nbsp;(15-75)</p></div>
-            <div class="ghost item" onclick="mark_ghost(this)" data-symbol="-">The Mimic<p>&nbsp;(?)</p></div>
-            <div class="ghost item" onclick="mark_ghost(this)" data-symbol="-">The Twins<p>&nbsp;(50)</p></div>
-            <div class="ghost item" onclick="mark_ghost(this)" data-symbol="-">Wraith<p>&nbsp;(50)</p></div>
-            <div class="ghost item" onclick="mark_ghost(this)" data-symbol="-">Yokai<p>&nbsp;(50-80)</p></div>
-            <div class="ghost item" onclick="mark_ghost(this)" data-symbol="-">Yurei<p>&nbsp;(50)</p></div>
+        <div id="SelectWrap">
+            <div id="ItemSelect"> 
+                <div class="evidence item" onclick="mark_evidence(this)" data-symbol="-">EMF5</div>
+                <div class="evidence item" onclick="mark_evidence(this)" data-symbol="-">Ghost Orbs</div>
+                <div class="evidence item" onclick="mark_evidence(this)" data-symbol="-">Spirit Box</div>
+                <div class="evidence item" onclick="mark_evidence(this)" data-symbol="-">Freezing Temps</div>
+                <div class="evidence item" onclick="mark_evidence(this)" data-symbol="-">Ultraviolet</div>
+                <div class="evidence item" onclick="mark_evidence(this)" data-symbol="-">Ghost Writing</div>
+                <div class="evidence item" onclick="mark_evidence(this)" data-symbol="-">D.O.T.S</div>
+             </div>      
+            <div id="GhostSelect">
+                <div class="ghost item" onclick="mark_ghost(this)" data-symbol="-">Banshee<p>&nbsp;(50)</p></div>
+                <div class="ghost item" onclick="mark_ghost(this)" data-symbol="-">Dayan<p>&nbsp;(45-65)</p></div>
+                <div class="ghost item" onclick="mark_ghost(this)" data-symbol="-">Deogen<p>&nbsp;(40)</p></div>
+                <div class="ghost item" onclick="mark_ghost(this)" data-symbol="-">Demon<p>&nbsp;(70)</p></div>
+                <div class="ghost item" onclick="mark_ghost(this)" data-symbol="-">Gallu<p>&nbsp;(40-60)</p></div>
+                <div class="ghost item" onclick="mark_ghost(this)" data-symbol="-">Goryo<p>&nbsp;(50)</p></div>
+                <div class="ghost item" onclick="mark_ghost(this)" data-symbol="-">Hantu<p>&nbsp;(50)</p></div>
+                <div class="ghost item" onclick="mark_ghost(this)" data-symbol="-">Jinn<p>&nbsp;(50)</p></div>
+                <div class="ghost item" onclick="mark_ghost(this)" data-symbol="-">Mare<p>&nbsp;(40-60)</p></div>
+                <div class="ghost item" onclick="mark_ghost(this)" data-symbol="-">Moroi<p>&nbsp;(50)</p></div>
+                <div class="ghost item" onclick="mark_ghost(this)" data-symbol="-">Myling<p>&nbsp;(50)</p></div>
+                <div class="ghost item" onclick="mark_ghost(this)" data-symbol="-">Obake<p>&nbsp;(50)</p></div>
+                <div class="ghost item" onclick="mark_ghost(this)" data-symbol="-">Obambo<p>&nbsp;(10-65)</p></div>
+                <div class="ghost item" onclick="mark_ghost(this)" data-symbol="-">Oni<p>&nbsp;(50)</p></div>
+                <div class="ghost item" onclick="mark_ghost(this)" data-symbol="-">Onryo<p>&nbsp;(40-60)</p></div>
+                <div class="ghost item" onclick="mark_ghost(this)" data-symbol="-">Phantom<p>&nbsp;(50)</p></div>
+                <div class="ghost item" onclick="mark_ghost(this)" data-symbol="-">Poltergeist<p>&nbsp;(50)</p></div>
+                <div class="ghost item" onclick="mark_ghost(this)" data-symbol="-">Raiju<p>&nbsp;(50-65)</p></div>
+                <div class="ghost item" onclick="mark_ghost(this)" data-symbol="-">Revenant<p>&nbsp;(50)</p></div>
+                <div class="ghost item" onclick="mark_ghost(this)" data-symbol="-">Shade<p>&nbsp;(0-35)</p></div>
+                <div class="ghost item" onclick="mark_ghost(this)" data-symbol="-">Spirit<p>&nbsp;(50)</p></div>
+                <div class="ghost item" onclick="mark_ghost(this)" data-symbol="-">Thaye<p>&nbsp;(15-75)</p></div>
+                <div class="ghost item" onclick="mark_ghost(this)" data-symbol="-">The Mimic<p>&nbsp;(?)</p></div>
+                <div class="ghost item" onclick="mark_ghost(this)" data-symbol="-">The Twins<p>&nbsp;(50)</p></div>
+                <div class="ghost item" onclick="mark_ghost(this)" data-symbol="-">Wraith<p>&nbsp;(50)</p></div>
+                <div class="ghost item" onclick="mark_ghost(this)" data-symbol="-">Yokai<p>&nbsp;(50-80)</p></div>
+                <div class="ghost item" onclick="mark_ghost(this)" data-symbol="-">Yurei<p>&nbsp;(50)</p></div>
+            </div>
+            <div id="ExtraSelect">
+                <div class="extra item" onclick="is_male = !is_male; applyData();" data-symbol="-">Male Ghost</div>
+                <div class="extra item" onclick="toggleEvidence()" data-symbol="-">3 Evidence</div>
+                <div class="extra item" ondblclick="window.location.reload()" data-symbol="-">Reset</div>
+                <div class="extra item" onclick="show_help = !show_help; applyData();" data-symbol="x">Help</div>
+                <div class="extra item" id="TimeStart" onclick="" data-symbol="o">Start</div>
+                <div class="extra item" id="Timer" data-symbol="-" style="font-family: 'Roboto', sans-serif; color: darkgray;">00:00</div>
+                <div class="extra item" onclick="speed_option = 1; applyData();" data-symbol="-">Slow Speed</div>
+                <div class="extra item" onclick="speed_option = 2; applyData();" data-symbol="-">Normal Speed</div>
+                <div class="extra item" onclick="speed_option = 3; applyData();" data-symbol="-">Fast Speed</div>
+            </div>
         </div>
 
-        <div id="ExtraSelect">
-            <div class="extra item" onclick="isMale = !isMale; applyData();" data-symbol="-">Male Ghost</div>
-            <div class="extra item" onclick="toggleEvidence()" data-symbol="-">3 Evidence</div>
-            <div class="extra item" ondblclick="window.location.reload()" data-symbol="-">Reset</div>
-            <div class="extra item" id="TimeStart" onclick="" data-symbol="o">Start</div>
-            <div class="extra item" id="Timer" data-symbol="-" style="font-family: 'Roboto', sans-serif; color: darkgray;">00:00</div>
-            <div class="extra item" onclick="" data-symbol="-"></div>
-            <div class="extra item" onclick="speed_option = 1; applyData();" data-symbol="-">Slow Speed</div>
-            <div class="extra item" onclick="speed_option = 2; applyData();" data-symbol="-">Normal Speed</div>
-            <div class="extra item" onclick="speed_option = 3; applyData();" data-symbol="-">Fast Speed</div>
+        <div id="Help">
+            - To mark a piece of evidence or a ghost type, click on the selected option.<br>
+            - Numbers highlighted in <span style="color:#e0b255">orange</span> are the minimum sanity threshold for a ghost to hunt.<hr>
+            - The journal will use the <span style="color:#6c93e0">possible evidence number</span> to determine what ghosts are an aren't possible.<br>
+            - The <span style="color:#6c93e0">timer</span> is primarily used to test the weakness of the <em>Spirit</em>.<br>
+            - The ghost <span style="color:#6c93e0">gender</span> will determine whether or not the ghost can be a <em>Banshee</em> or <em>Dayan</em>.<hr>
+            The <span style="color:#6c93e0">speed options</span> are used to rule out certain ghosts that may or may not be able to change their speed. It is based on the <b>audible speed when not in 
+                the ghosts line of sight
+            </b>. If the ghost speed varies this option will not help you.<hr>
+            This overlay application was made by: <br><b>Michael Warmbier</b> @github.com/MichaelWarmbier<br>
+            Please direct all feedback to either the repository on GitHub or business@michaelwarmbier.com
         </div>
 
         <script>
@@ -344,11 +371,16 @@
 
                 }
             
-                if (isMale) { 
+                if (is_male) { 
                     ruleout("Banshee");
                     ruleout("Dayan");  
-                    change_visual(extras[0], "-");
+                    change_visual(extras[0], "o");
                 } else change_visual(extras[0], "x");
+
+                if (show_help) {
+                    change_visual(extras[3], "o");
+                    Help.style.display = "block";
+                } else { change_visual(extras[3], "x"); Help.style.display = "none"; }
       
                 switch (speed_option) {
                     case 1:
@@ -389,14 +421,14 @@
 
             TimeStart.addEventListener("click", () => {
                 if (timer_state == "o") { 
-                    document.getElementsByClassName("extra")[3].innerHTML = "Stop";
+                    document.getElementsByClassName("extra")[4].innerHTML = "Stop";
                     timer_state = "x"; 
                     timestamp = Math.floor((new Date()).getTime() / 1000);
                 } else if (timer_state == "x") { 
-                    document.getElementsByClassName("extra")[3].innerHTML = "Reset"; 
+                    document.getElementsByClassName("extra")[4].innerHTML = "Reset"; 
                     timer_state = "-"; 
                 } else { 
-                    document.getElementsByClassName("extra")[3].innerHTML = "Start"; 
+                    document.getElementsByClassName("extra")[4].innerHTML = "Start"; 
                     timer_state = "o"; 
                 }
             });
@@ -405,7 +437,7 @@
                 if (timer_value > 6_000_000) timer_value = 6_000_000;
                 if (timer_state == "x") timer_value = Math.floor((new Date()).getTime() / 1000) - timestamp;
                 else if (timer_state == "o") timer_value = 0;
-                document.getElementsByClassName("extra")[4].innerHTML = `${(Math.floor(timer_value / 60)).toString().padStart(2, "0")}:${(timer_value % 60).toString().padStart(2, "0")}`; 
+                document.getElementsByClassName("extra")[5].innerHTML = `${(Math.floor(timer_value / 60)).toString().padStart(2, "0")}:${(timer_value % 60).toString().padStart(2, "0")}`; 
             }, 1000);
 
             update();
