@@ -39,8 +39,8 @@
             p { color: #e0b255; }
 
             .state-minus { color: white; text-decoration: none; }
-            .state-x { color: black; text-decoration: line-through; }
-            .state-o { color: lightgreen; text-decoration: none; }
+            .state-x, .state-y { background-color: #3b3b3b; color: gray; }
+            .state-o { box-shadow: 1px 1px black, -1px 1px black, 1px -1px black, -1px -1px black; border-radius: 50%; }
         </style>
     </head>
     <body>
@@ -170,7 +170,7 @@
                 },
                 "The Mimic": {
                     "Evidence": ["Spirit Box", "Freezing Temps", "Ultraviolet"],
-                    "Forced": null,
+                    "Forced": "Ghost Orbs",
                     "Speed": null,
                 },
                 "The Twins": {
@@ -266,19 +266,26 @@
             function change_visual(obj, label) {
                 obj.dataset.symbol = label;
                 obj.classList.remove("state-minus", "state-x", "state-o");
+                const thresh = obj.getElementsByTagName("p")[0];
+                if (thresh) thresh.style.color = "#e0b255";
                 switch (label) {
                     case "-": obj.classList.add("state-minus"); break;
-                    case "x": obj.classList.add("state-x");     break;
                     case "o": obj.classList.add("state-o");     break;
+                    case "x": 
+                        obj.classList.add("state-x");
+                        if (thresh) thresh.style.color = "gray";
+                    break;
+                    
                 }
             }
 
             function ruleout(name) {
                 const ghosts = document.getElementsByClassName('ghost');
                 for (let gIndex = 0; gIndex < ghosts.length; gIndex++)
-                    if (ghosts[gIndex].innerHTML.replace(/<p\b[^>]*>.*?<\/p>/gi, "") == name) 
-                        ghosts[gIndex].style.filter = "brightness(50%)";
-
+                    if (ghosts[gIndex].innerHTML.replace(/<p\b[^>]*>.*?<\/p>/gi, "") == name) {
+                        ghosts[gIndex].classList.add("state-y");
+                        ghosts[gIndex].getElementsByTagName("p")[0].style.color = "gray";
+                    }
             }
 
             function update() {
@@ -306,10 +313,12 @@
                 const extras = document.getElementsByClassName("extra");
                 const ghosts = document.getElementsByClassName("ghost");
                 for (let gIndex = 0; gIndex < ghosts.length; gIndex++) {
-                    ghosts[gIndex].style.filter = "brightness(100%)";
                     let name = ghosts[gIndex].innerHTML.replace(/<p\b[^>]*>.*?<\/p>/gi, "");
 
                     if (ghost_data[name]) {
+                        ghosts[gIndex].classList.remove("state-y");
+                        if (ghosts[gIndex].dataset.symbol != "x") ghosts[gIndex].getElementsByTagName("p")[0].style.color = "#e0b255";
+
                         for (let eIndex = 0; eIndex < found_evidence.length; eIndex++)
                             if (!ghost_data[name].Evidence.includes(found_evidence[eIndex]))
                                 if (!(name == "The Mimic" && found_evidence[eIndex] == "Ghost Orbs"))
@@ -403,4 +412,4 @@
         </script>
 
     </body>
-</html
+</html>
